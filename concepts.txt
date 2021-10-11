@@ -1,0 +1,17 @@
+we want to persist the login data and login info across multiple requests so how can be do that...
+
+req object persists only till we dont send the response. Once we send the res that req is lost
+so if have to store loggedIn info, and we keep it in req object like we kept for user. req.user
+we will not be able to access the same in another route when we send the response back
+
+Another is we can save in a global variable and not in req object but if we do so, that would be shared across browers
+
+so the way to handle this is, we save the data in user's browser
+
+we can do so by setting cookie in response's header so it will saved in the user's browser 
+and on every subsequent call made to the server, we get cookie paramter in request's body
+
+we can check the same in developer's tool -> Application tab -> Cookie section -> and clicking on website name (localhost)
+
+and can check the same in network tab in request header
+
