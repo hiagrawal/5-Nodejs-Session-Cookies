@@ -42,8 +42,20 @@ exports.postLogin = (req, res, next) => {
         User.findById('6161733cd2ec6bef280e800f')
           .then(user => {
             req.session.isLoggedIn = true;
-            req.session.user = user;
-            res.redirect('/');
+            req.session.user = user; 
+            //since this assigns the user to session biut does not automatically add all the methods that mongoose provides 
+            //and that we add like addToCart and all and hence will have to add in req.user in app.js that we dis earlier
+            // to get access to all the methods
+            
+            //sometimes this redirects even before the session is set and hence updated changes do not get reflected.
+            //to make sure that we reflect only when session is set, call it in save
+            //res.redirect('/');
+
+            req.session.save(err => {
+                console.log(err);
+                res.redirect('/');
+            })
+
           })
           .catch(err => console.log(err));
     

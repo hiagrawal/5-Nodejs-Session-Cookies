@@ -34,14 +34,20 @@ app.use(session({secret:'my secret', resave: false, saveUninitialized: false, st
 //this third party pkg setsup the cookie automatically that we see in browser
 
 //lets create the user only when we are logged in.. so will move this code to auth.js file
-// app.use((req, res, next) => {
-//   User.findById('6161733cd2ec6bef280e800f')
-//     .then(user => {
-//       req.user = user;
-//       next();
-//     })
-//     .catch(err => console.log(err));
-// });
+//when we assign in session in auth controller, it does not automatically add all the methods that mongoose provides 
+//and that we add like addToCart and all and hence will have to add in req.user again that we did earlier
+// to get access to all the methods
+app.use((req, res, next) => {
+  if(!req.session.user){
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
