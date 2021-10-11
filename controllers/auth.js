@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 exports.getLogin = (req, res, next) => {
 
     //when using cookies
@@ -11,7 +13,7 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        isAuthenticated: false
+        isAuthenticated: req.session.isLoggedIn
     });
 };
 
@@ -22,7 +24,7 @@ exports.postLogin = (req, res, next) => {
     //res.setHeader('Set-Cookie', 'loggedIn=true; Max-Age=10');
 
     //when using session
-    req.session.isLoggedIn = true;
+    //req.session.isLoggedIn = true;
     //session is a object provided by third party express-session pkg in request object
     //this will add a new cookie in the browser with the name connect.isd (can check the same in application cookie tab)
     //and this hash value will identify the user (the browse in session) to the server
@@ -35,7 +37,23 @@ exports.postLogin = (req, res, next) => {
     //it uses a cookie to identify the user
     //currently we are storing in memory which is not recommended as a security point as well as 
     //if data becomes huge, it affects the performance also, so now we wil store it in db
+
+    
+        User.findById('6161733cd2ec6bef280e800f')
+          .then(user => {
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            res.redirect('/');
+          })
+          .catch(err => console.log(err));
     
 
-    res.redirect('/');
+    
+};
+
+exports.postLogout = (req, res, next) => {
+    req.session.destroy(err => {
+        console.log(err);
+        res.redirect('/');
+    });
 };

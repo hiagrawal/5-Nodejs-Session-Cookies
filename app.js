@@ -31,15 +31,17 @@ app.use(session({secret:'my secret', resave: false, saveUninitialized: false, st
 //resave and saveUninitialized is used for performance that is do not save the session everytime till there is no change in the session value
 //store is used to define where it needs to store to which we have given mongodb
 //if not given anything, then by default stores in memory
+//this third party pkg setsup the cookie automatically that we see in browser
 
-app.use((req, res, next) => {
-  User.findById('6161733cd2ec6bef280e800f')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
+//lets create the user only when we are logged in.. so will move this code to auth.js file
+// app.use((req, res, next) => {
+//   User.findById('6161733cd2ec6bef280e800f')
+//     .then(user => {
+//       req.user = user;
+//       next();
+//     })
+//     .catch(err => console.log(err));
+// });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
