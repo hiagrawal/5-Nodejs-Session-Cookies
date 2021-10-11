@@ -51,3 +51,14 @@ and session will now contain the confidential info on the server side
 
 For using session, we need third party package so will install
 npm install --save express-session
+
+To store it in mongo db, we need to install 
+npm install --save connect-mongodb-session
+
+we can check all storage options at official express-session docs:
+https://github.com/expressjs/session
+https://www.npmjs.com/package/connect-mongodb-session
+
+Summary:
+So sessions are used in all scenarios where we want some data to be accessible across multiple requests but limited to user 
+and should not be visible to other users
