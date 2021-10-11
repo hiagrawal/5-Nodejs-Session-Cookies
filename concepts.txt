@@ -4,21 +4,24 @@ req object persists only till we dont send the response. Once we send the res th
 so if have to store loggedIn info, and we keep it in req object like we kept for user. req.user
 we will not be able to access the same in another route when we send the response back
 
-Another is we can save in a global variable and not in req object but if we do so, that would be shared across browers
+Another is we can save in a global variable and not in req object but if we do so, 
+that would be shared across all requests but also across all users
 
-so the way to handle this is, we save the data in user's browser
+so the way to handle this is, we save the data in user's browser 
+so it will be available across requests and also to only specific/intended user since it is in user's browser
 
 we can do so by setting cookie in response's header so it will saved in the user's browser 
 and on every subsequent call made to the server, we get cookie paramter in request's body
-so it is always sent with every request so it is a cross requests data storage
+so it is always sent with every request so it is a cross requests data storage mechanism
 
 we can check the same in developer's tool -> Application tab -> Cookie section -> and clicking on website name (localhost)
 
 and can check the same in network tab in request header
 
-disadvantage of cookie is since it is visible in developer tools - Application tab, user can easily manipulate it
+disadvantage of cookie is since it is stored on the client side, 
+it is visible in developer tools - Application tab, and user can easily manipulate it
 and obviously which should not be the case hence it is not advisable to store sensitive information in cookies
-and so we have sessions, Sessions are used to store sensitive information across requests
+and so we have sessions, Sessions are used to store sensitive information across requests on the server side 
 
 but there are some cases, where cookies are helpful and can be used like..
 Tracking users. It is a very common scenario where even if the user is not on the page, and what all pages user is on,
@@ -39,3 +42,12 @@ but cant be accesed inside the client's browsers javascript code
 res.setHeader('Set-Cookie', 'loggedIn=true; HttpOnly');
 
 
+Sessions:
+Sessions are stored on the server that is on the server side and on the server, it is stored either in memory or in database
+A client needs to tell the server to which session he belongs. for that we will use cookie that will store the id of the session
+That id will usually be a hashed id so that only server can confirm to which id it belongs
+and hence their will be no point of user manipulating it at client side 
+and session will now contain the confidential info on the server side
+
+For using session, we need third party package so will install
+npm install --save express-session
