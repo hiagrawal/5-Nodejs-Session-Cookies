@@ -10,8 +10,32 @@ so the way to handle this is, we save the data in user's browser
 
 we can do so by setting cookie in response's header so it will saved in the user's browser 
 and on every subsequent call made to the server, we get cookie paramter in request's body
+so it is always sent with every request so it is a cross requests data storage
 
 we can check the same in developer's tool -> Application tab -> Cookie section -> and clicking on website name (localhost)
 
 and can check the same in network tab in request header
+
+disadvantage of cookie is since it is visible in developer tools - Application tab, user can easily manipulate it
+and obviously which should not be the case hence it is not advisable to store sensitive information in cookies
+and so we have sessions, Sessions are used to store sensitive information across requests
+
+but there are some cases, where cookies are helpful and can be used like..
+Tracking users. It is a very common scenario where even if the user is not on the page, and what all pages user is on,
+every info is sent with evey request made to the server
+
+Cookies expire once we close the browser if we dont set anything so there are various config paramters that we can set like
+Expires which takes the data in http date format which states when cookie should expire
+res.setHeader('Set-Cookie', 'loggedIn=true; Expires=<somevalue>');
+Max-Age which takes a number in second, that is for how long that cookie should stay around
+res.setHeader('Set-Cookie', 'loggedIn=true; Max-Age=10');
+Domain which specifies to which domain cookie should be sent which is again used for tracking
+res.setHeader('Set-Cookie', 'loggedIn=true; Domain=<somevalue>');
+Secure which specifies that the cookie should be set only when it is secure that is https
+res.setHeader('Set-Cookie', 'loggedIn=true; Secure');
+HttpOnly which specifies only on http server that is we cant access the cookie value through client's side javascript (bcz it always runs on server https)
+so this is a another security measure bcz it will be attached to the every request and accessible in cross requests 
+but cant be accesed inside the client's browsers javascript code
+res.setHeader('Set-Cookie', 'loggedIn=true; HttpOnly');
+
 
