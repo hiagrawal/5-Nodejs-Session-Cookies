@@ -41,13 +41,38 @@ so this is a another security measure bcz it will be attached to the every reque
 but cant be accesed inside the client's browsers javascript code
 res.setHeader('Set-Cookie', 'loggedIn=true; HttpOnly');
 
+There are two ways cookies gets destroyed:
+one: If we dont set anything then when we close the browser 
+(which is called temporary cookies or session cookies since it is only for that session)
+Another is: when we define expire or max-age paramter so after that time cookies will be destroyed 
+(which is called permanent cookies)
+
 
 Sessions:
-Sessions are stored on the server that is on the server side and on the server, it is stored either in memory or in database
+Sessions are stored on the server that is on the server side and on the server, it is stored either in memory (Machine RAM) or in database
 A client needs to tell the server to which session he belongs. for that we will use cookie that will store the id of the session
 That id will usually be a hashed id so that only server can confirm to which id it belongs
 and hence their will be no point of user manipulating it at client side 
 and session will now contain the confidential info on the server side
+
+Sessions are destroyed when we destroy it maually on any action like logout
+we can not destroy the cookies manually on any action or anything, 
+it is either when we close the browser or after a certain duration of time that we have set
+
+
+when we set the session, express session pkg implicitely set the cookie to match the session id
+cookie gets destroyed when we close the browser and session gets destroyed when we destroy it manually 
+
+we set the session on login and destroy the session on logout, 
+if we destroy the session but browser is not closed so its cookie will be there in browser 
+but it will not get its matching session id and so user/current session will not be authenticated
+
+Similarly, If not logged out, but if we close the browser, cookies destroys 
+and so session will not get any matching id and so user/current session will not be authenticated
+
+so till the time we have not closed the current browser or logged out manually and 
+opened it in new tab or new window, cookies will be there in browser and hence the current session will be active
+
 
 For using session, we need third party package so will install
 npm install --save express-session
@@ -60,5 +85,14 @@ https://github.com/expressjs/session
 https://www.npmjs.com/package/connect-mongodb-session
 
 Summary:
-So sessions are used in all scenarios where we want some data to be accessible across multiple requests but limited to user 
+So sessions are used in all scenarios where we want some sensitive data to be accessible across multiple requests but limited to user 
 and should not be visible to other users
+
+Useful resource:
+
+More on Sessions: https://www.quora.com/What-is-a-session-in-a-Web-Application
+
+More on Cookies: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+
+Express-session Official Docs: https://github.com/expressjs/session
+
